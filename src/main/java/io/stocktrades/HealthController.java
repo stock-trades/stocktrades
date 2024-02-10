@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthController {
-
+// testing endpoint
   @GetMapping("/health")
   public ResponseEntity<String> testTrades() {
     return ResponseEntity.ok("StockTrades application is running");
