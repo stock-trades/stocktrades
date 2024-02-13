@@ -9,6 +9,7 @@ public class HealthController {
 // testing endpoint
   @GetMapping("/health")
   public ResponseEntity<String> testTrades() {
+    System.out.println("Varun ... StockTrades application is running");
     return ResponseEntity.ok("StockTrades application is running");
   }
 }
