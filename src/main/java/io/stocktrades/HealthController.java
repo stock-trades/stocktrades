@@ -13,4 +13,5 @@ public class HealthController {
     return ResponseEntity.ok("StockTrades application is running");
   }
 }
+
  // Path: src/main/java/io/stocktrades/StockController.java
