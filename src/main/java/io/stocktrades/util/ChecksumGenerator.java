@@ -1,7 +1,6 @@
 package io.stocktrades.util;
 
 import com.google.common.hash.Hashing;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
 
