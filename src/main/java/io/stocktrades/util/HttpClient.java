@@ -1,9 +1,13 @@
 package io.stocktrades.util;
 
 import io.stocktrades.Constants;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,11 +22,12 @@ import java.util.Map;
 
 
     @Component
-    @RequiredArgsConstructor
     @Slf4j
+    @RequiredArgsConstructor
     public class HttpClient {
 
-        private final RestTemplate restTemplate;
+        private  final RestTemplate restTemplate;
+
 
         /**
          * Performs an HTTP GET request to the specified URL.
@@ -131,7 +136,6 @@ import java.util.Map;
          * Performs an HTTP POST request to the specified URL.
          *
          * @param url API URL to make request to
-         * @param token JWT token to include to the request
          * @param customHeaders custom header
          * @param type response type
          * @param <T> type of the response class
