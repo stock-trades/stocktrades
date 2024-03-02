@@ -36,9 +36,7 @@ public class StockController {
   @GetMapping("/req_token")
   public ResponseEntity<String> getRequestToken() {
     log.info("zerodha Login url is:{}", zerodhaLoginUrl);
-    UriComponents loginUrl = UriComponentsBuilder.fromHttpUrl(zerodhaLoginUrl).build();
-    System.out.println("the url is:" + loginUrl);
-    return ResponseEntity.ok("Postback API Call ");
+    return ResponseEntity.ok(getRequestToken().getBody());
   }
 
   @GetMapping("/accessToken")
