@@ -23,10 +23,10 @@ public class StockController {
   @Value("${zerodha.login.url}")
   private  String zerodhaLoginUrl;
 
-  @Value("dalaltrader.apiKey")
+  @Value("${dalaltrader.apiKey}")
   private String apiKey;
 
-  @Value("zerodha.user.id")
+  @Value("${zerodha.user.id}")
   private String userId;
 
   private final StockService stockService;
