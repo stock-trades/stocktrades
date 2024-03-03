@@ -29,19 +29,19 @@ public class StockService {
 
   private final RestTemplate restTemplate;
 
-  @Value("zerodha.login.url")
+  @Value("${zerodha.login.url}")
   private String zerodhaLoginUrl;
 
-  @Value("zerodha.base.ur")
+  @Value("${zerodha.base.ur}")
   private String zerodhaBaseUrl;
 
-  @Value("zerodha.access.url")
+  @Value("${zerodha.access.url}")
   private String zerodhaAccessUrl;
 
-  @Value("dalaltrader.apiKey")
+  @Value("${dalaltrader.apiKey}")
   private String apiKey;
 
-  @Value("dalaltrader.apiSecret")
+  @Value("${dalaltrader.apiSecret}")
   private String apiSecret;
 
   public String getRequestToken() {
@@ -52,13 +52,17 @@ public class StockService {
     return requestToken;
   }
 
-  public User getAccessToken(String requestToken,String userId) throws IOException, KiteException {
-    log.info("String accessToken method Begins");
+  public User getAccessToken(String requestToken, String userId) throws IOException, KiteException {
+    log.info("String accessToken method Begins for reToken:{},userId:{}", requestToken, userId);
 
-      KiteConnect kiteconnect = new KiteConnect(apiKey);
-      kiteconnect.setUserId(userId);
-      kiteconnect.getLoginURL();
+    KiteConnect kiteconnect = new KiteConnect(apiKey);
+    kiteconnect.setUserId(userId);
+    String loginURL = kiteconnect.getLoginURL();
 
-    return kiteconnect.generateSession(requestToken, apiSecret);
+    log.info("the loginUrl is:{}",loginURL);
+    User user = kiteconnect.generateSession(requestToken, apiSecret);
+    log.info("the User  is:{}",user.toString());
+
+    return user;
   }
 }
