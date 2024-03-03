@@ -1,9 +1,14 @@
 package io.stocktrades.service;
 
+import com.zerodhatech.kiteconnect.KiteConnect;
+import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import com.zerodhatech.models.User;
 import io.stocktrades.Constants;
 import io.stocktrades.dto.request.AccessTokenRequestDto;
 import io.stocktrades.util.ChecksumGenerator;
 import io.stocktrades.util.HttpClient;
+
+import java.io.IOException;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +35,7 @@ public class StockService {
   @Value("zerodha.base.ur")
   private String zerodhaBaseUrl;
 
-  @Value("zerodha.access.token")
+  @Value("zerodha.access.url")
   private String zerodhaAccessUrl;
 
   @Value("dalaltrader.apiKey")
@@ -47,32 +52,13 @@ public class StockService {
     return requestToken;
   }
 
-  public JSONObject getAccessToken() {
+  public User getAccessToken(String requestToken,String userId) throws IOException, KiteException {
     log.info("String accessToken method Begins");
-    String requestToken = getRequestToken();
-    String zerodhaSessionUri =
-        UriComponentsBuilder.fromUriString(zerodhaBaseUrl).path(zerodhaAccessUrl).toUriString();
-    String checkSum = ChecksumGenerator.generateChecksum(apiKey, requestToken, apiSecret);
-    AccessTokenRequestDto accessTokenRequest =
-        AccessTokenRequestDto.builder()
-            .apiKey(apiKey)
-            .requestToken(requestToken)
-            .checkSum(checkSum)
-            .build();
-    log.info("AccessToken dto:{} to url:{}", accessTokenRequest, zerodhaSessionUri);
-    // @NonNull String url, @NonNull Map<String, String> customHeaders, P entity,
-    // ParameterizedTypeReference<T> type httpClient.post(zerodhaSessionUri)
 
-    ResponseEntity<JSONObject> accessToken =
-        httpClient.post(
-            zerodhaSessionUri,
-            Collections.singletonMap(Constants.X_KITE_VERSION, Constants.X_KITE_VERSION_VALUE),
-            accessTokenRequest,
-            new ParameterizedTypeReference<JSONObject>() {});
-    log.info("the accessToken is:{}", accessToken.getBody());
+      KiteConnect kiteconnect = new KiteConnect(apiKey);
+      kiteconnect.setUserId(userId);
+      kiteconnect.getLoginURL();
 
-    log.info("String accessToken method Ends");
-
-    return accessToken.getBody();
+    return kiteconnect.generateSession(requestToken, apiSecret);
   }
 }

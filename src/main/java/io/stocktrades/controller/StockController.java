@@ -1,6 +1,8 @@
 package io.stocktrades.controller;
 
 import com.zerodhatech.kiteconnect.KiteConnect;
+import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import com.zerodhatech.models.User;
 import io.stocktrades.service.StockService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
 
 @RestController
 @Slf4j
@@ -20,6 +22,12 @@ public class StockController {
 
   @Value("${zerodha.login.url}")
   private  String zerodhaLoginUrl;
+
+  @Value("dalaltrader.apiKey")
+  private String apiKey;
+
+  @Value("zerodha.user.id")
+  private String userId;
 
   private final StockService stockService;
 
@@ -37,14 +45,16 @@ public class StockController {
 
   @GetMapping("/req_token")
   public ResponseEntity<String> getRequestToken() {
-    log.info("zerodha Login url is:{}", zerodhaLoginUrl);
-    KiteConnect kiteconnect = new KiteConnect();
+    log.info("zerodha Login url is:{} for apiKey:{}", zerodhaLoginUrl,apiKey);
+
     return ResponseEntity.ok(getRequestToken().getBody());
   }
 
   @GetMapping("/accessToken")
-  public ResponseEntity<JSONObject> getAccessToken() {
-    JSONObject accessToken = stockService.getAccessToken();
-    return ResponseEntity.ok(accessToken);
+  public ResponseEntity<User> getAccessToken(@RequestParam("request_token") String requestToken) throws IOException, KiteException {
+    return ResponseEntity.ok(stockService.getAccessToken(requestToken,userId));
   }
+
+
+
 }
