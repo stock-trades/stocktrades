@@ -286,7 +286,7 @@ import java.util.Map;
             var headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            headers.setBearerAuth(token);
+       //     headers.setBearerAuth(token);
             customHeaders.forEach(headers::add);
             return new HttpEntity<>(body, headers);
         }
