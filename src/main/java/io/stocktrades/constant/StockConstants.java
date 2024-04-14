@@ -9,6 +9,9 @@ public class StockConstants {
     public static String NSE="NSE";
     public static String CNC_PRODUCT="CNC";
 
+    public static String KITE_HEADER="X-Kite-Version";
+
+    public static String V3="3";
 /*    public Map<String,String> exchangeType =new HashMap<String,String>(){{}
         put("NSE","NSE");
 

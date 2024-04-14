@@ -5,6 +5,7 @@ import com.zerodhatech.models.Holding;
 import com.zerodhatech.models.Order;
 import com.zerodhatech.models.User;
 import io.stocktrades.dto.request.OrderDto;
+import io.stocktrades.dto.response.LogResponseDto;
 import io.stocktrades.service.StockService;
 import java.io.IOException;
 import java.util.List;
@@ -69,8 +70,8 @@ public class StockController {
   }
 
   @GetMapping("/holdings")
-  public ResponseEntity<List<Holding>> getEquityHoldings() throws IOException, KiteException {
-    return ResponseEntity.ok(stockService.getHoldings(userId));
+  public ResponseEntity<List<Holding>> getEquityHoldings(@RequestParam("access_token")String accessToken) throws IOException, KiteException {
+    return ResponseEntity.ok(stockService.getHoldings(userId,accessToken));
   }
 
   @PostMapping("/buy/{stock}/{price}")
@@ -80,7 +81,7 @@ public class StockController {
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<JSONObject> zerodhaLogout(@RequestParam("access_token") String accessToken)
+  public ResponseEntity<LogResponseDto> zerodhaLogout(@RequestParam("access_token") String accessToken)
           throws IOException, KiteException {
     return ResponseEntity.ok(stockService.logout(userId,apiKey,accessToken));
   }

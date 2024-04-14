@@ -98,9 +98,9 @@ public class StockService {
     return regular;
   }
 
-  public List<Holding> getHoldings(String userId) throws IOException, KiteException {
+  public List<Holding> getHoldings(String userId,String accessToken) throws IOException, KiteException {
     KiteConnect kiteConnect = getKiteConnect(userId);
-
+    kiteConnect.setAccessToken(accessToken);
     return kiteConnect.getHoldings();
   }
 
@@ -112,7 +112,7 @@ public class StockService {
     return order;
   }
 
-  public JSONObject logout(String userId, String apiKey, String accessToken)
+  public LogResponseDto logout(String userId, String apiKey, String accessToken)
       throws IOException, KiteException {
 
     String uriString =
@@ -126,14 +126,12 @@ public class StockService {
         httpClient.delete(
             uriString,
             null,
-            Collections.singletonMap("X-Kite-Version", "3"),
+            Collections.singletonMap(StockConstants.KITE_HEADER,StockConstants.V3),
             new ParameterizedTypeReference<LogResponseDto>() {});
     log.info("apiKey is:{}, accessToken:{}, delete response:{}", apiKey, accessToken,delete);
 
-    KiteConnect kiteConnect = getKiteConnect(userId);
-    JSONObject logout = kiteConnect.logout();
-    log.info("logout response model is:{}", logout);
-    return logout;
+    log.info("logout response model is:{}", delete);
+    return delete.getBody();
   }
 
   private OrderParams getOrderParams(String stockName, String price) {
