@@ -118,7 +118,7 @@ public class StockService {
     String uriString =
         UriComponentsBuilder.fromHttpUrl(baseUrl)
             .path(accessUrl)
-            .query("api_key={api}&access_Token={accessToken}")
+            .query("api_key={api}&access_token={accessToken}")
             .buildAndExpand(apiKey, accessToken)
             .toUriString();
     log.info("the uri String for logout is:{}", uriString);
