@@ -17,6 +17,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -100,6 +101,14 @@ public class StockService {
 
     Order order = kiteConnect.placeOrder(getOrderParams(stockName,price), StockConstants.REGULAR);
     return order;
+
+  }
+
+  public JSONObject logout(String userId,String apiKey,String accessToken) throws IOException, KiteException {
+    KiteConnect kiteConnect = getKiteConnect(userId);
+    log.info("apiKey is:{}, accessToken:{}",apiKey,accessToken);
+    JSONObject logout = kiteConnect.logout();// placeOrder(getOrderParams(stockName,price), StockConstants.REGULAR);
+    return logout;
 
   }
 

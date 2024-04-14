@@ -11,6 +11,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class StockController {
   @GetMapping("/redirect")
   public ResponseEntity<String> redirect(@RequestParam("request_token") String requestToken) {
     log.info("Redirect URL and requestParam is :{}", requestToken);
-    return ResponseEntity.ok("Redirect API Call ");
+    return ResponseEntity.ok("Redirect API Call request token is:"+requestToken);
   }
 
   @GetMapping("/postback")
@@ -77,4 +78,11 @@ public class StockController {
       throws IOException, KiteException {
     return ResponseEntity.ok(stockService.buyStock(userId,symbol,price));
   }
+
+  @PostMapping("/logout/{access_token}")
+  public ResponseEntity<JSONObject> zerodhaLogout(@PathVariable("access_token") String accessToken)
+          throws IOException, KiteException {
+    return ResponseEntity.ok(stockService.logout(userId,apiKey,accessToken));
+  }
+
 }

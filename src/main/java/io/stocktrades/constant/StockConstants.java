@@ -17,6 +17,10 @@ public static Map<String, String> exchangeType = new HashMap<String, String>(){
     {
         put("NSE","NSE");
         put("BSE","BSE");
+        put("MF","MF");
+        put("BFO","BFO");
+        put("NFO","NFO");
+        put("CDS","CDS");
     }};
 
     public static Map<String, String> validityType = new HashMap<String, String>(){
@@ -24,6 +28,8 @@ public static Map<String, String> exchangeType = new HashMap<String, String>(){
             put("IOC","IOC");
             put("NRML","NRML");
             put("MIS","MIS");
+            put("BO","BO");
+            put("CO","CO");
         }};
 
     public static Map<String, String> transactionType = new HashMap<String, String>(){
