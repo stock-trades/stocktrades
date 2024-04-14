@@ -22,6 +22,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Configuration
@@ -40,6 +42,9 @@ public class StockService {
 
   @Value("${dalaltrader.apiSecret}")
   private String apiSecret;
+
+  @Value("${zerodha.base.url}")
+  private String baseUrl;
 
   private ModelMapper modelMapper;
 
@@ -105,11 +110,16 @@ public class StockService {
   }
 
   public JSONObject logout(String userId,String apiKey,String accessToken) throws IOException, KiteException {
+
+    String uriString = UriComponentsBuilder.fromHttpUrl(baseUrl).path("/")
+            .query("api_key={api}&access_Token={accessToken}").buildAndExpand(apiKey, accessToken).toUriString();
+    log.info("the uri String for logout is:{}",uriString);
+    // httpClient.delete()
     KiteConnect kiteConnect = getKiteConnect(userId);
     log.info("apiKey is:{}, accessToken:{}",apiKey,accessToken);
-    JSONObject logout = kiteConnect.logout();// placeOrder(getOrderParams(stockName,price), StockConstants.REGULAR);
-    return logout;
+    JSONObject logout = kiteConnect.logout();
 
+    return logout;
   }
 
   private OrderParams getOrderParams(String stockName,String price){

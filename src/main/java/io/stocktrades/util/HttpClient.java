@@ -28,7 +28,6 @@ import java.util.Map;
 
         private  final RestTemplate restTemplate;
 
-
         /**
          * Performs an HTTP GET request to the specified URL.
          *
