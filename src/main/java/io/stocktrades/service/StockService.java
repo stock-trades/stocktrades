@@ -14,11 +14,15 @@ import io.stocktrades.util.HttpClient;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
@@ -49,6 +53,9 @@ public class StockService {
 
   @Value("${zerodha.base.url}")
   private String baseUrl;
+
+  @Autowired
+  private ObjectFactory<HttpSession> httpSessionFactory;
 
   private ModelMapper modelMapper;
 
@@ -82,6 +89,7 @@ public class StockService {
 
     KiteConnect kiteconnect = getKiteConnect(userId);
     User user = kiteconnect.generateSession(requestToken, apiSecret);
+    httpSessionFactory.getObject().setAttribute("access_token",user.accessToken);
     log.info("the User  is:{}", user.toString());
 
     return user;
@@ -100,6 +108,7 @@ public class StockService {
 
   public List<Holding> getHoldings(String userId,String accessToken) throws IOException, KiteException {
     KiteConnect kiteConnect = getKiteConnect(userId);
+    log.info("getting access_token from session:{}",httpSessionFactory.getObject().getAttribute("access_token").toString());
     kiteConnect.setAccessToken(accessToken);
     return kiteConnect.getHoldings();
   }
