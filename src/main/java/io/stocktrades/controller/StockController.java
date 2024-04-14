@@ -79,8 +79,8 @@ public class StockController {
     return ResponseEntity.ok(stockService.buyStock(userId,symbol,price));
   }
 
-  @PostMapping("/logout/{access_token}")
-  public ResponseEntity<JSONObject> zerodhaLogout(@PathVariable("access_token") String accessToken)
+  @PostMapping("/logout")
+  public ResponseEntity<JSONObject> zerodhaLogout(@RequestParam("access_token") String accessToken)
           throws IOException, KiteException {
     return ResponseEntity.ok(stockService.logout(userId,apiKey,accessToken));
   }
