@@ -107,7 +107,7 @@ public class StockService {
     return regular;
   }
 
-  public List<Holding> getHoldings(String userId,String accessToken) throws IOException, KiteException {
+  public List<Holding> getHoldings(String userId/*,String accessToken*/) throws IOException, KiteException {
     KiteConnect kiteConnect = getKiteConnect(userId);
     Object sessionAccessToken = httpSessionFactory.getObject().getAttribute("access_token");
     if(!Objects.isNull(sessionAccessToken))
