@@ -14,6 +14,7 @@ import io.stocktrades.util.HttpClient;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -108,8 +109,12 @@ public class StockService {
 
   public List<Holding> getHoldings(String userId,String accessToken) throws IOException, KiteException {
     KiteConnect kiteConnect = getKiteConnect(userId);
-    log.info("getting access_token from session:{}",httpSessionFactory.getObject().getAttribute("access_token").toString());
-    kiteConnect.setAccessToken(accessToken);
+    Object sessionAccessToken = httpSessionFactory.getObject().getAttribute("access_token");
+    if(!Objects.isNull(sessionAccessToken))
+    {
+      log.info("getting access_token from session:{}",sessionAccessToken.toString());
+      kiteConnect.setAccessToken(sessionAccessToken.toString());
+    }
     return kiteConnect.getHoldings();
   }
 
@@ -138,7 +143,7 @@ public class StockService {
             Collections.singletonMap(StockConstants.KITE_HEADER,StockConstants.V3),
             new ParameterizedTypeReference<LogResponseDto>() {});
     log.info("apiKey is:{}, accessToken:{}, delete response:{}", apiKey, accessToken,delete);
-
+    httpSessionFactory.getObject().invalidate();
     log.info("logout response model is:{}", delete);
     return delete.getBody();
   }
