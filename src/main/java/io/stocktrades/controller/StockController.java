@@ -70,8 +70,8 @@ public class StockController {
   }
 
   @GetMapping("/holdings")
-  public ResponseEntity<List<Holding>> getEquityHoldings(/*@RequestParam("access_token")String accessToken*/) throws IOException, KiteException {
-    return ResponseEntity.ok(stockService.getHoldings(userId/*,accessToken*/));
+  public ResponseEntity<List<Holding>> getEquityHoldings(@RequestParam("access_token")String accessToken) throws IOException, KiteException {
+    return ResponseEntity.ok(stockService.getHoldings(userId,accessToken));
   }
 
   @PostMapping("/buy/{stock}/{price}")
