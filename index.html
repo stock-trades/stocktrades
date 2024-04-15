@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Instruments</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+    
+    #pieChartContainer {
+        width: 400px;
+        height: 400px;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Financial Instruments</h2>
+<form id="queryForm">
+  <label id="accessToken">Access Token:</label>
+  <input type="text" id="access_token" name="access_token" value="provide access token here..." />
+<br/> <br/><br/>
+  <button type="button" onclick="fetchDataAndDisplay()">Fetch Data</button>
+</form>
+
+<table id="instrumentTable">
+  <tr>
+    <th>Trading Symbol</th>
+    <th>Last Price</th>
+    <th>Quantity</th>
+    <th>Realised Quantity</th>
+    <th>Average Price</th>
+    <th>Profit/Loss</th>
+    <th>Exchange</th>
+  </tr>
+  <tbody id="instrumentTableBody"></tbody>
+</table>
+
+<div id="pieChartContainer">
+    <canvas id="pieChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Function to fetch JSON data from API using CORS proxy and display it in table
+    async function fetchDataAndDisplay() {
+        try {
+            const accesstoken = document.getElementById('access_token').value;
+            const queryParams = `?access_token=${accesstoken}`;
+            const apiUrl = 'https://api.allorigins.win/raw?url=https://dalaltrader.com/holdings' + queryParams;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            displayData(data);
+            createPieChart(data);
+        } catch (err) {
+            console.error('Error fetching data:', err);
+        }
+    }
+
+    // Function to display JSON data in table
+    function displayData(jsonData) {
+        var tableBody = document.getElementById("instrumentTableBody");
+        // Clear existing rows
+        tableBody.innerHTML = '';
+        
+        jsonData.forEach(function (instrument) {
+            var row = tableBody.insertRow(-1);
+            var tradingSymbolCell = row.insertCell(0);
+            var lastPriceCell = row.insertCell(1);
+            var quantityCell = row.insertCell(2);
+            var realisedQuantityCell = row.insertCell(3);
+            var averagePriceCell = row.insertCell(4);
+            var pnlCell = row.insertCell(5);
+            var exchangeCell = row.insertCell(6);
+
+            tradingSymbolCell.innerHTML = instrument.tradingSymbol;
+            lastPriceCell.innerHTML = instrument.lastPrice;
+            quantityCell.innerHTML = instrument.quantity;
+            realisedQuantityCell.innerHTML = instrument.realisedQuantity;
+            averagePriceCell.innerHTML = instrument.averagePrice;
+            pnlCell.innerHTML = instrument.pnl;
+            exchangeCell.innerHTML = instrument.exchange;
+        });
+    }
+
+    // Function to create a pie chart
+    function createPieChart(data) {
+        var tradingSymbols = [];
+        var averagePrices = [];
+        
+        data.forEach(function (instrument) {
+            tradingSymbols.push(instrument.tradingSymbol);
+            averagePrices.push(parseFloat(instrument.averagePrice));
+        });
+
+        var ctx = document.getElementById('pieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: tradingSymbols,
+                datasets: [{
+                    label: 'Average Price Allocation',
+                    data: averagePrices,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                title: {
+                    display: true,
+                    text: 'Average Price Allocation by Trading Symbol'
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
