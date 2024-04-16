@@ -110,7 +110,7 @@ public class StockService {
   public List<Holding> getHoldings(String userId,String accessToken) throws IOException, KiteException {
     log.info("getHoldings method Begins");
     KiteConnect kiteConnect = getKiteConnect(userId);
-    Object sessionAccessToken = httpSessionFactory.getObject().getAttribute("access_token");
+   // Object sessionAccessToken = httpSessionFactory.getObject().getAttribute("access_token");
     /*if(!Objects.isNull(sessionAccessToken))
     {
       log.info("getting access_token from session:{}",sessionAccessToken.toString());
