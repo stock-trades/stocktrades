@@ -29,4 +29,12 @@ public class CustomExceptionHandler {
     log.error("handleClientError is:{}", ex.getMessage());
     return new ResponseEntity<>(new LogResponseDto("failure", ex.getMessage()),ex.getStatusCode());
   }
+
+  @ExceptionHandler(value = StockException.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  public ResponseEntity<LogResponseDto> handleStockException(StockException ex) {
+    log.error("handleStockException is:{}", ex.getMessage());
+    return ResponseEntity.internalServerError()
+            .body(new LogResponseDto("failure", ex.getMessage()));
+  }
 }
