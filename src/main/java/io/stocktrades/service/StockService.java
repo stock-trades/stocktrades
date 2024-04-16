@@ -82,7 +82,7 @@ public class StockService {
           @Override
           public void sessionExpired() {
             System.out.println("Session expired. Kindly get fresh token");
-      //      new StockException("Session expired. Kindly initiate process for fresh token",500);
+            new StockException("Session expired. Kindly initiate process for fresh token",500);
           }
         });
     return kiteconnect;
