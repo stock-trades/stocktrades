@@ -12,8 +12,11 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +40,12 @@ public class StockController {
   private String userId;
 
   private final StockService stockService;
+
+  @GetMapping("/")
+  public Resource indexPage(){
+   return new ClassPathResource("index.html");
+  }
+
 
   @GetMapping("/redirect")
   public ResponseEntity<String> redirect(@RequestParam("request_token") String requestToken) {
