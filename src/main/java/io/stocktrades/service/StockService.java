@@ -11,6 +11,7 @@ import com.zerodhatech.models.User;
 import io.stocktrades.constant.StockConstants;
 import io.stocktrades.dto.request.OrderDto;
 import io.stocktrades.dto.response.LogResponseDto;
+import io.stocktrades.exception.handler.StockException;
 import io.stocktrades.util.HttpClient;
 import java.io.IOException;
 import java.util.Collections;
@@ -80,8 +81,8 @@ public class StockService {
         new SessionExpiryHook() {
           @Override
           public void sessionExpired() {
-            System.out.println("session expired");
-            new TokenException("Session expired. Kindly initiate process for fresh token",500);
+            System.out.println("Session expired. Kindly get fresh token");
+      //      new StockException("Session expired. Kindly initiate process for fresh token",500);
           }
         });
     return kiteconnect;
