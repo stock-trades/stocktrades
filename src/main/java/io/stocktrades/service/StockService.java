@@ -3,6 +3,7 @@ package io.stocktrades.service;
 import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import com.zerodhatech.kiteconnect.kitehttp.exceptions.TokenException;
 import com.zerodhatech.models.Holding;
 import com.zerodhatech.models.Order;
 import com.zerodhatech.models.OrderParams;
@@ -80,6 +81,7 @@ public class StockService {
           @Override
           public void sessionExpired() {
             System.out.println("session expired");
+            new TokenException("Session expired. Kindly initiate process for fresh token",500);
           }
         });
     return kiteconnect;
